@@ -83,7 +83,19 @@ namespace Saving_Web_Page_to_PNG_Image_R
                 // #6 Save Image of the loaded web page into a PNG file.
                 Dispatcher.BeginInvoke((Action)(() =>
                 {
-                    browserView.GetImage().Save(@"teamdev.png", ImageFormat.Png);
+                    //Create save file dialog
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "PNG files (*.PNG)|*.PNG|All files (*.*)|*.*";
+                    saveFileDialog.FilterIndex = 1;
+                    saveFileDialog.RestoreDirectory = true;
+
+                    //Make sure that file should be save
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        //Format name of file
+                        string imageFileName = saveFileDialog.FileName.ToString().Replace("%.png%", "");
+                        browserView.GetImage().Save(imageFileName, ImageFormat.Png);
+                    }
                 }));
             };
         }
